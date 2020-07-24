@@ -1,0 +1,51 @@
+q4 diagram script
+
+    title new note add
+
+    browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+    note over browser:
+    browser send the new note to the sever
+    end note
+
+    server->browser: status code 302 and lacation /notes
+
+    note over server:
+    requesting the Browser to redirect to the notes.html page
+    end note 
+
+    browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+    server-->browser: HTML-code
+    browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+    server-->browser: main.css
+    browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+    server-->browser: main.js
+
+    note over browser:
+    browser starts executing js-code
+    that requests JSON data from server 
+    end note
+
+    browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+    server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
+
+    note over browser:
+    browser executes the event handler
+    that renders notes to display
+    end note
+
+q5 diagram scripts
+
+    title adding a note in spa
+
+    browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_sp
+
+    note over browser:
+    sending the new note to the sever in JSON fromat
+    and add the new note to the notes list in the browesr
+    end note 
+
+    server->browser: status code 201
+
+    note over server:
+    the data has been recived
+
