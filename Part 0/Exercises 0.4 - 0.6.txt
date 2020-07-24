@@ -33,7 +33,25 @@ q4 diagram script
     that renders notes to display
     end note
 
-q5 diagram scripts
+q5 diagram script
+    title going to the spa page
+
+    browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+    server->browser: HTML code
+    browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+    server->browser:main.css
+    browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa.js
+    server->browser: spa.js
+    note over browser:
+    start running  the spa.js code and requesting the data.json file
+    end note
+    browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+    server->browser:data.json
+    note over browser
+    dispaly the notes in the list from the callback
+    end note
+
+q6 diagram scripts
 
     title adding a note in spa
 
@@ -48,4 +66,5 @@ q5 diagram scripts
 
     note over server:
     the data has been recived
+    end note
 
