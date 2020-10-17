@@ -1,33 +1,36 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = (props) =>{
-return (
-  <h1>{props.course_name}</h1>
+const Header = (props) => {
+  return (
+  <div>
+    <h1>{props.course}</h1>
+  </div>
 )
 }
-
 const Part = (props) =>{
+  return (<div>{props.part.name} = {props.part.exercises}</div>)
+}
+const Content = (props)=>{
   return (
-    <p>
-      {props.values.name} {props.values.exercises}
-    </p>
-  )
-}
-
-const Content = (props) =>{
-  let part_arry = props.parts_a.map(value => <Part values={value}  />)
-  return(
     <div>
-     {part_arry}
-  </div>
+      
+      <p><Part part={props.parts[0]}  /></p>
+      <p> <Part part={props.parts[1]} /></p>
+      <p><Part part={props.parts[2]} /></p>
+    </div>
   )
 }
 
-const Total = (props) =>{
+const Total=(props)=>{
+  // eslint-disable-next-line
+  let sum = 0 
+
+  props.total.forEach(value => sum +=value.exercises )
   return(
-    <p>Number of exercises {props.total_value[0].exercises + props.total_value[1].exercises 
-      + props.total_value[2].exercises}</p>
+  <div>
+    Number of exercises {sum}
+  </div>
   )
 }
 
@@ -50,12 +53,11 @@ const App = () => {
     ]
   }
 
-
   return (
     <div>
-      <Header course_name = {course.name} />
-      <Content parts_a = {course.parts} />
-      <Total total_value = {course.parts} />
+      <Header course={course.name} />
+      <Content parts={course.parts}   />
+      <p> <Total total= {course.parts} /></p>
     </div>
   )
 }
