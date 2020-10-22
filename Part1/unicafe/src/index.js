@@ -7,34 +7,30 @@ const Button = ({ text, action }) =>{
   </button>
   )
 }
+
+const Statistic =({name , result}) =>{
+  return(<p>{name} {result}</p>)
+}
+
 const Statistics = ({ good , neutral , bad   }) =>{
   let all= good + neutral + bad
   let avr= ((good*1)+(bad*-1))/all
   let per= good*100/all
+ 
+  // eslint-disable-next-line
   if (all == 0){
     return(<p>no feedback is given </p>)
   }
   else {
   return(
     <div>
-  <p>
-    Good {good}
-  </p>
-  <p>
-   Neutral {neutral}
- </p>
- <p>
-   Bad {bad}
- </p>
- <p>
-   All {all}
- </p>
- <p>
-   Averge {avr}
- </p>
- <p>
-   Positive {per}
- </p>
+      <Statistic name='Good' result={good} />
+      <Statistic name='Neutral' result={neutral} />
+      <Statistic name='Bad' result={bad} />
+      <Statistic name='All' result={all} />
+      <Statistic name='Averge' result={avr} />
+      <Statistic name='Positive' result={per} />
+ 
  </div>
   )
   }
