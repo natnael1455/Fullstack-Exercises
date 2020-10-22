@@ -7,7 +7,7 @@ const Button = ({ text, action }) =>{
   </button>
   )
 }
-const Stat = ({ name, result }) =>{
+const Statistics = ({ name, result }) =>{
   return(
   <p>
     {name} {result}
@@ -25,10 +25,10 @@ const App = () => {
   // function calling button even hander
   const  onClick = (button)=>{
     const handler =()=>{
-      if(button == "good"){
+      if(button === "good"){
         setGood(good+1)
       }
-      else if (button == "neutral"){
+      else if (button === "neutral"){
         setNeutral(neutral+1)
       }
       else {
@@ -45,12 +45,12 @@ const App = () => {
       <h1>give feedback</h1>
       <Button text='good' action= {onClick('good')}/> <Button text='neutral' action= {onClick('neutral')}/> <Button text='bad' action= {onClick('bad')}/>
       <h1>stastics</h1>
-        <Stat name='good' result={good} />
-        <Stat name='neutral' result={neutral} />
-        <Stat name='bad' result={bad} />
-        <Stat name='all' result={all} />
-        <Stat name='averge' result={((good*1)+(bad*-1))/all} />
-        <Stat name='positive' result={ (good/all*100) + '%'} />
+        <Statistics name='good' result={good} />
+        <Statistics name='neutral' result={neutral} />
+        <Statistics name='bad' result={bad} />
+        <Statistics name='all' result={all} />
+        <Statistics name='averge' result={((good*1)+(bad*-1))/all} />
+        <Statistics name='positive' result={ (good/all*100) + '%'} />
         
     </div>
   )
