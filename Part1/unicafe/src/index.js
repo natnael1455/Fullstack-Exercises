@@ -9,7 +9,12 @@ const Button = ({ text, action }) =>{
 }
 
 const Statistic =({name , result}) =>{
-  return(<p>{name} {result}</p>)
+  return(
+  <tr> 
+    <td>{name}</td>
+    <td>{result}</td>
+  </tr>
+ )
 }
 
 const Statistics = ({ good , neutral , bad   }) =>{
@@ -23,15 +28,15 @@ const Statistics = ({ good , neutral , bad   }) =>{
   }
   else {
   return(
-    <div>
+    <table>
       <Statistic name='Good' result={good} />
       <Statistic name='Neutral' result={neutral} />
       <Statistic name='Bad' result={bad} />
       <Statistic name='All' result={all} />
       <Statistic name='Averge' result={avr} />
-      <Statistic name='Positive' result={per} />
+      <Statistic name='Positive' result={per + '%'} />
  
- </div>
+ </table>
   )
   }
 }
