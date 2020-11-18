@@ -7,10 +7,11 @@ const Header = ({ course }) => {
   )
 }
 
-const Total = ({ course }) => {
-  const sum = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises
+const Total = ({ parts }) => {
+  let sum =0 
+  parts.map( part => sum += part.exercises )
   return(
-    <p>Number of exercises {sum}</p>
+    <h3>Number of exercises {sum}</h3>
   ) 
 }
 
@@ -38,6 +39,7 @@ const Course = (props)=>{
     <div>
       {courses.map(course => <Header key= {course.id} course = {course} />)}
       {courses.map(course => <Content key= {course.id} parts = {course.parts} />)}
+      {courses.map(course => <Total key= {course.id} parts = {course.parts} />)}
     
     </div>
  
