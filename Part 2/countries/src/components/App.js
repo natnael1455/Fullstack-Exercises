@@ -1,6 +1,54 @@
 import React, { useState,useEffect } from 'react'
 import axios from 'axios'
 
+const Singl = ({country}) =>{
+  console.log(country)
+  return(
+    <div>
+      <h2>{country.name}</h2>
+      <p>
+      Capital city :{country.capital}<br/>
+      population : {country.population} <br/>
+      </p>
+
+      languages : 
+         <ul>
+           {country.languages.map(language => <li key={language.iso639_1}>{language.name}</li>)}
+         </ul>
+    <img src ={country.flag}  alt="flag"  width="25%" hight="25%"/>
+    
+    </div>
+  )
+
+}
+const Display = ({countriesToShow})=>{
+
+  if (countriesToShow.length > 10){
+    return (
+      <p>too many contries to show, specifay more filter</p>
+    )
+  }
+  else{
+    if (countriesToShow.length > 1 ){
+      return (
+        <div>
+          <h2>countries</h2>
+          <ul>
+          {countriesToShow.map(country => <li key={country.alpha2Code}>{country.name}</li>)}
+        </ul>
+        </div>
+        
+      )
+    }
+     else {
+       return (
+        countriesToShow.map(country => < Singl key={country.alpha2Code} country={country} />)
+       )
+     }
+  }
+    
+
+}
 const App = () => {
 
   const [ countries, setCountries ] = useState([])
@@ -24,17 +72,12 @@ const App = () => {
   ? countries
   : countries.filter(country => country.name.toLowerCase().includes(quiry.toLocaleLowerCase()))
 
-  const countriescont = (countriesToShow.length <=10)
-  ? countriesToShow
-  :[{name:'too many contries to show, specifay more filter',alpha2Code:'123'}]
-  
 
   return (
     <div>
       Find countries:<input value = {quiry} onChange={handleQuirychange}/>
-      <ul>
-        {countriescont.map(country => <li key={country.alpha2Code}>{country.name}</li>)}
-      </ul>
+
+      <Display countriesToShow ={countriesToShow} />
     </div>
   )
 }
