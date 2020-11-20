@@ -21,7 +21,7 @@ const Singl = ({country}) =>{
   )
 
 }
-const Display = ({countriesToShow})=>{
+const Display = ({countriesToShow,handleQuirychangel})=>{
 
   if (countriesToShow.length > 10){
     return (
@@ -36,7 +36,8 @@ const Display = ({countriesToShow})=>{
         <div >
           <h2>countries</h2>
           <ul>
-          {countriesToShow.map(country => <li key={country.alpha2Code}>{country.name} <button>show</button></li>)}
+          {countriesToShow.map(country => <li key={country.alpha2Code}>{country.name} 
+          <button id={country.name} onClick={handleQuirychangel}>show</button></li>)}
         </ul>
         </div>
         
@@ -70,16 +71,22 @@ const App = () => {
     setQuiry(event.target.value)
   }
 
+  const handleQuirychangel = (event) =>{
+    console.log(event.target.id)
+    setQuiry(event.target.id)
+  }
+
   const countriesToShow = (quiry==='')
   ? countries
-  : countries.filter(country => country.name.toLowerCase().includes(quiry.toLocaleLowerCase()))
+  : countries.filter(country => country.name.toLowerCase()
+    .includes(quiry.toLocaleLowerCase()))
 
 
   return (
     <div >
       Find countries:<input value = {quiry} onChange={handleQuirychange}/>
-      <div id="par">
-       <Display countriesToShow ={countriesToShow} />
+      <div>
+       <Display countriesToShow ={countriesToShow}  handleQuirychangel={handleQuirychangel}/>
       </div>
       
     </div>
