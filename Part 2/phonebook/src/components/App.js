@@ -1,42 +1,8 @@
 import React, { useState } from 'react'
+import Form from './Form'
+import Persons from './Persons'
+import Filter from './Filter'
 
-const Form = ({addName,newName,handleNameChange,newNumber,handleNumberChange}) =>{
-  return(
-    <div>
-    <h2>Add a New </h2>
-    <form onSubmit={addName}>
-        <div> name: <input value={newName} onChange={handleNameChange}/></div>
-        <div> number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-  </div>
-  )
-}
-const Detail = ({person}) => {
-  return (
-    <p>{person.name} : {person.number}</p>
-  )
-}
-const Persons = ({personToShow}) => {
-  return(
-    <div>
-     <h2>Numbers</h2>
-        {personToShow.map(person =><Detail key={person.name} person={person} />)}
-   </div>
-  )
-}
-
-const Filter = ({showAll,handleShowChange}) =>{
-  return(
-    <div>
-    <h2>Phonebook</h2>
-    filter shown with <input value={showAll} onChange={handleShowChange}/>
-    </div>
-  )
-}
 const App = () => {
 
   const [ persons, setPersons ] = useState([
