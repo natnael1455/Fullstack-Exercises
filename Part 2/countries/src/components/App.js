@@ -6,10 +6,10 @@ const Singl = ({country}) =>{
   return(
     <div>
       <h2>{country.name}</h2>
-      <p>
+      
       Capital city :{country.capital}<br/>
       population : {country.population} <br/>
-      </p>
+    
 
       languages : 
          <ul>
@@ -30,11 +30,13 @@ const Display = ({countriesToShow})=>{
   }
   else{
     if (countriesToShow.length > 1 ){
+
+     
       return (
-        <div>
+        <div >
           <h2>countries</h2>
           <ul>
-          {countriesToShow.map(country => <li key={country.alpha2Code}>{country.name}</li>)}
+          {countriesToShow.map(country => <li key={country.alpha2Code}>{country.name} <button>show</button></li>)}
         </ul>
         </div>
         
@@ -74,10 +76,12 @@ const App = () => {
 
 
   return (
-    <div>
+    <div >
       Find countries:<input value = {quiry} onChange={handleQuirychange}/>
-
-      <Display countriesToShow ={countriesToShow} />
+      <div id="par">
+       <Display countriesToShow ={countriesToShow} />
+      </div>
+      
     </div>
   )
 }
