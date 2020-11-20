@@ -5,8 +5,8 @@ const Singl = ({country}) =>{
 
   const [weather,setWeather]= useState([])
   const api_key = process.env.REACT_APP_API_KEY
-  console.log(api_key)
-  const qr= 'http://api.weatherstack.com/current?access_key='+api_key+'&query=' + country.capital
+  console.log(`the key is ${api_key}`)
+  const qr= `http://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}`
   useEffect(() => {
     axios
       .get(qr)
