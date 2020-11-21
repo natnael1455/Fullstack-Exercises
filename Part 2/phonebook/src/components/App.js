@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react'
 import Form from './Form'
 import Persons from './Persons'
 import Filter from './Filter'
-import axios from 'axios'
+import personService from '../services/person'
 
 const App = () => {
 
@@ -12,12 +12,13 @@ const App = () => {
   const [showAll, setShowAll] = useState('')
   
   useEffect(() => {
-    axios
-      .get(' http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
+  
   
   const addName = (event) => {
     event.preventDefault()
@@ -31,16 +32,18 @@ const App = () => {
         name: newName,
         number:newNumber
       }
-      axios
-      .post('http://localhost:3001/persons', personObject)
-      .then(response => {
-      console.log(response)
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
-      })
+
+      personService
+      .create(personObject)
+      .then(returnedNote => {
+        setPersons(persons.concat(personObject))
+        setNewName('')
+        setNewNumber('')
+        })
+      
     }
   }
+
   const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
@@ -65,7 +68,7 @@ const App = () => {
       <Filter showAll={showAll} handleShowChange={handleShowChange} />
       <Form addName={addName} newName={newName} handleNameChange ={handleNameChange} newNumber={newNumber}
         handleNumberChange={handleNumberChange} />
-      <Persons personToShow={personToShow} />
+      <Persons personToShow={personToShow}/>
     </div>
 
     
