@@ -25,7 +25,17 @@ const App = () => {
     const same = (element) => element  === newName;
 
     if (persons.map(person => person.name).some(same)){
-      window.alert(newName+' is already added in the phonebooks');
+      const result = window.confirm(`${newName} is already added in the phonebooks`)
+      if (result){
+        const person = persons.find(p => p.name ===newName)
+        const changedPerson = { ...person, number:newNumber}
+
+        personService
+          .update(changedPerson.id, changedPerson)
+          .then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== changedPerson.id ? person : returnedPerson))
+      })
+      }
     }
     else {
       const personObject = {
