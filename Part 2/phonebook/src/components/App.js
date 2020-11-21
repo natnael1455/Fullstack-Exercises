@@ -33,7 +33,10 @@ const App = () => {
         personService
           .update(changedPerson.id, changedPerson)
           .then(returnedPerson => {
-          setPersons(persons.map(person => person.id !== changedPerson.id ? person : returnedPerson))
+          setPersons(persons.map(person => 
+            person.id !== changedPerson.id 
+            ? person 
+            : returnedPerson))
       })
       }
     }
@@ -71,13 +74,19 @@ const App = () => {
 
   const personToShow = (showAll==='')
   ? persons
-  : persons.filter(person => person.name.toLowerCase().includes(showAll.toLocaleLowerCase()))
+  : persons.filter(person => person.name.toLowerCase()
+  .includes(showAll.toLocaleLowerCase()))
 
   return (
     <div>
       <Filter showAll={showAll} handleShowChange={handleShowChange} />
-      <Form addName={addName} newName={newName} handleNameChange ={handleNameChange} newNumber={newNumber}
+      
+      <Form addName={addName} 
+        newName={newName} 
+        handleNameChange ={handleNameChange} 
+        newNumber={newNumber}
         handleNumberChange={handleNumberChange} />
+
       <Persons personToShow={personToShow}/>
     </div>
 
