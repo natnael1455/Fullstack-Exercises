@@ -4,6 +4,8 @@ import Persons from './Persons'
 import Filter from './Filter'
 import personService from '../services/person'
 
+
+
 const App = () => {
 
   const [ persons, setPersons ] = useState([]) 
@@ -37,6 +39,7 @@ const App = () => {
             person.id !== changedPerson.id 
             ? person 
             : returnedPerson))
+
       })
       }
     }
@@ -50,8 +53,6 @@ const App = () => {
       .create(personObject)
       .then(returnedNote => {
         setPersons(persons.concat(personObject))
-        setNewName('')
-        setNewNumber('')
         })
       
     }
@@ -80,7 +81,6 @@ const App = () => {
   return (
     <div>
       <Filter showAll={showAll} handleShowChange={handleShowChange} />
-      
       <Form addName={addName} 
         newName={newName} 
         handleNameChange ={handleNameChange} 
