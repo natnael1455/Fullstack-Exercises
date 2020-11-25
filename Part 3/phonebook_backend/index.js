@@ -43,6 +43,12 @@ app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const note = persons.find(person=> person.id === id)
+    response.json(note)
+  })
+
 app.get('/api/info', (request, response) => {
     let length =persons.length
     let t = Date.now()
