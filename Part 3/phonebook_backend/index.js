@@ -108,6 +108,9 @@ app.get('/api/info', (request, response) => {
       "id": Math.floor(Math.random() * 100)
     }
     persons = persons.concat(person)
+    response.status(200).json({ 
+      succses: 'the name is add in the phone book' 
+    })
   })
 
 const PORT = 3001
