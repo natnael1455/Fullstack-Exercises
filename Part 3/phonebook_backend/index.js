@@ -1,7 +1,9 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+app.use(morgan('tiny'))
 
 
 let persons =[
@@ -98,8 +100,6 @@ app.get('/api/info', (request, response) => {
       "id": Math.floor(Math.random() * 100)
     }
     persons = persons.concat(person)
-    console.log(!body.number)
-    response.send(body)
   })
 
 const PORT = 3001
