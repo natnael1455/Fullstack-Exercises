@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
+
 let persons =[
       {
         "name": "Arto Hellas",
@@ -63,6 +66,40 @@ app.get('/api/info', (request, response) => {
     console.log(current)
     response.send(`<h3>phonebook has entries of ${length} people</h3>
     <h3>${current}</h3>`)
+  })
+
+  app.post('/api/persons', (request, response) => {
+
+  const body = request.body
+  
+  if (!body.name) {
+      return response.status(400).json({ 
+        error: 'name is missing' 
+      })
+    }
+
+    if (!body.number) {
+      return response.status(400).json({ 
+        error: 'number is missing' 
+      })
+
+    }
+
+    if (persons.find(p => p.name.toLocaleLowerCase()=== body.name.toLocaleLowerCase())) {
+      return response.status(400).json({ 
+        error: 'the name exist in the phone book' 
+      })
+
+    }
+
+    const person ={
+      "name": body.name,
+      "number":body.number,
+      "id": Math.floor(Math.random() * 100)
+    }
+    persons = persons.concat(person)
+    console.log(!body.number)
+    response.send(body)
   })
 
 const PORT = 3001
