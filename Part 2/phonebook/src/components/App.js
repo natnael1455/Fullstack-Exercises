@@ -3,6 +3,19 @@ import Form from './Form'
 import Persons from './Persons'
 import Filter from './Filter'
 import personService from '../services/person'
+import '../index.css'
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
 
 
 
@@ -12,6 +25,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('enter the name')
   const [newNumber,setNewNumber] = useState('000')
   const [showAll, setShowAll] = useState('')
+  const [errorMessage, setErrorMessage] = useState('some error happened...')
   
   useEffect(() => {
     personService
@@ -39,7 +53,12 @@ const App = () => {
             person.id !== changedPerson.id 
             ? person 
             : returnedPerson))
-
+            setErrorMessage(
+              `the number for ${newName} is changed to ${newNumber}`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
       })
       }
     }
@@ -53,6 +72,12 @@ const App = () => {
       .create(personObject)
       .then(returnedNote => {
         setPersons(persons.concat(personObject))
+        setErrorMessage(
+          `${newName} is added to the phone book`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         })
       
     }
@@ -80,6 +105,8 @@ const App = () => {
 
   return (
     <div>
+      <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter showAll={showAll} handleShowChange={handleShowChange} />
       <Form addName={addName} 
         newName={newName} 
