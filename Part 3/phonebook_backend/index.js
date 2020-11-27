@@ -61,7 +61,11 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const note = persons.find(person=> person.id === id)
+    if(!note){
+      return response.status(204).end()
+    }
     response.json(note)
+    console.log(!note)
   })
 
   app.delete('/api/persons/:id', (request, response) => {
@@ -71,7 +75,7 @@ app.get('/api/persons/:id', (request, response) => {
     response.status(204).end()
   })
 
-app.get('/api/info', (request, response) => {
+app.get('/info', (request, response) => {
     let length =persons.length
     let t = Date.now()
     let current = new Date(t).toString();
