@@ -25,7 +25,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('enter the name')
   const [newNumber,setNewNumber] = useState('000')
   const [showAll, setShowAll] = useState('')
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [errorMessage, setErrorMessage] = useState(null)
   
   useEffect(() => {
     personService
