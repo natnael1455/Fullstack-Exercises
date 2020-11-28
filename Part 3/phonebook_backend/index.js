@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const app = express()
-
+require('dotenv').config()
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
@@ -15,6 +15,7 @@ app.use(morgan(function (tokens, req, res) {
     tokens['response-time'](req, res), 'ms '+JSON.stringify(req.body)
   ].join(' ')
 }))
+
 
 
 let persons =[
@@ -50,14 +51,24 @@ let persons =[
       }
     ]
   
+   
+    
+    
+   
+
+    const Person = require('./models/person')
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(results => {
+    response.json(results)
+    mongoose.connection.close()
+    })
 })
+  
 
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
@@ -120,7 +131,7 @@ app.get('/info', (request, response) => {
     })
   })
 
-  const PORT = process.env.PORT || 3001
+  const PORT = process.env.PORT
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })
