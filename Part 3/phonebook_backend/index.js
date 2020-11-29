@@ -87,12 +87,14 @@ app.get('/info', (request, response) => {
       number:body.number
     })
 
-  person.save().then(result => {
+  person.save()
+  .then(result => {
       response.status(201).json(result)
-      .catch((error) =>{
-      response.status(204).end()
-      })
-  })
+     
+  }) 
+  .catch((error) =>{
+    response.status(204).end()
+    })
   })
 
   const PORT = process.env.PORT
