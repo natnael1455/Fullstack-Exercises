@@ -40,29 +40,8 @@ const App = () => {
     event.preventDefault()
     const same = (element) => element  === newName;
 
-    if (persons.map(person => person.name).some(same)){
-      const result = window.confirm(`${newName} is already added in the phonebooks`)
-      if (result){
-        const person = persons.find(p => p.name ===newName)
-        const changedPerson = { ...person, number:newNumber}
+    
 
-        personService
-          .update(changedPerson.id, changedPerson)
-          .then(returnedPerson => {
-          setPersons(persons.map(person => 
-            person.id !== changedPerson.id 
-            ? person 
-            : returnedPerson))
-            setErrorMessage(
-              `the number for ${newName} is changed to ${newNumber}`
-            )
-            setTimeout(() => {
-              setErrorMessage(null)
-            }, 5000)
-      })
-      }
-    }
-    else {
       const personObject = {
         name: newName,
         number:newNumber
@@ -80,7 +59,7 @@ const App = () => {
         }, 5000)
         })
       
-    }
+    
   }
 
   const handleNameChange = (event) => {

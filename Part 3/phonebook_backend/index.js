@@ -3,6 +3,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const app = express()
 require('dotenv').config()
+
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
@@ -17,73 +18,38 @@ app.use(morgan(function (tokens, req, res) {
 }))
 
 
+    const Person= require('./models/person')
 
-let persons =[
-      {
-        "name": "Arto Hellas",
-        "number": "040-123456",
-        "id": 1
-      },
-      {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-      },
-      {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-      },
-      {
-        "name": "natnael Yacob",
-        "number": "0415697457",
-        "id": 5
-      },
-      {
-        "name": "dina yacob",
-        "number": "07118808",
-        "id": 8
-      },
-      {
-        "name": "enter the name",
-        "number": "123",
-        "id": 9
-      }
-    ]
-  
-   
-    
-    
-   
-
-    const Person = require('./models/person')
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
+
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(results => {
     response.json(results)
-    mongoose.connection.close()
     })
 })
-  
+
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const note = persons.find(person=> person.id === id)
-    if(!note){
-      return response.status(204).end()
-    }
+
+  Person.findById(request.params.id).then(note => {
     response.json(note)
-    console.log(!note)
+   
   })
+  .catch((error) =>{
+    
+    return response.status(204).end()
+  })
+
+  })
+
 
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons= persons.filter(person => person.id !== id)
-  
     response.status(204).end()
   })
 
@@ -95,6 +61,7 @@ app.get('/info', (request, response) => {
     response.send(`<h3>phonebook has entries of ${length} people</h3>
     <h3>${current}</h3>`)
   })
+
 
   app.post('/api/persons', (request, response) => {
 
@@ -113,22 +80,19 @@ app.get('/info', (request, response) => {
 
     }
 
-    if (persons.find(p => p.name.toLocaleLowerCase()=== body.name.toLocaleLowerCase())) {
-      return response.status(400).json({ 
-        error: 'the name exist in the phone book' 
-      })
-
-    }
-
-    const person ={
-      "name": body.name,
-      "number":body.number,
-      "id": Math.floor(Math.random() * 100)
-    }
-    persons = persons.concat(person)
-    response.status(200).json({ 
-      succses: 'the name is add in the phone book' 
+   
+    
+    const person = new Person({
+      name:body.name,
+      number:body.number
     })
+
+  person.save().then(result => {
+      response.status(201).json(result)
+      .catch((error) =>{
+      response.status(204).end()
+      })
+  })
   })
 
   const PORT = process.env.PORT
