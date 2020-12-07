@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
@@ -18,7 +19,7 @@ app.use(morgan(function (tokens, req, res) {
 }))
 
 
-    const Person= require('./models/person')
+const Person= require('./models/person')
 
 
 app.get('/', (request, response) => {
@@ -28,8 +29,8 @@ app.get('/', (request, response) => {
 
 app.get('/api/persons', (request, response,next) => {
   Person.find({})
-  .then(results => {
-    response.json(results)
+    .then(results => {
+      response.json(results)
     })
     .catch(error => next(error))
 })
@@ -38,30 +39,28 @@ app.get('/api/persons', (request, response,next) => {
 app.get('/api/persons/:id', (request, response,next) => {
 
   Person.findById(request.params.id)
-  .then(person => {
-    if (person) {
-      response.json(person)
-    } 
-    else {
-      response.status(404).end()
-    }
-  })
+    .then(person => {
+      if (person) {
+        response.json(person)
+      }
+      else {
+        response.status(404).end()
+      }
+    })
 
-  .catch(error => next(error))
-
-  })
+    .catch(error => next(error)) })
 
 
-  app.delete('/api/persons/:id', (request, response,next) => {
-    Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+app.delete('/api/persons/:id', (request, response,next) => {
+  Person.findByIdAndRemove(request.params.id)
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
-  })
+})
 
 app.get('/info', (request, response,next) => {
-    Person.find({})
+  Person.find({})
     .then(persons => {
       let length =persons.length
       let t = Date.now()
@@ -69,63 +68,55 @@ app.get('/info', (request, response,next) => {
       console.log(current)
       response.send(`<h3>phonebook has entries of ${length} people</h3>
     <h3>${current}</h3>`)
-      })
-    .catch(error => next(error))
-    })  
-    
+    })
+    .catch(error => next(error))})
 
 
-  app.put('/api/persons/:id', (request, response,next) => {
-   const id =request.params.id
-   const body=request.body
 
-   const person = new Person({
+app.put('/api/persons/:id', (request, response,next) => {
+  const id =request.params.id
+  const body=request.body
+  Person.findByIdAndUpdate(id,{ number:body.number },{ new: true, runValidators: true })
+    .then(person => {
+      response.json(person)
+    }).catch(error => next(error))
+}
+)
+
+app.post('/api/persons', (request, response, next) => {
+
+  const body = request.body
+  const person = new Person({
     name:body.name,
     number:body.number
   })
 
-   Person.findByIdAndUpdate(id,{number:body.number},{new: true, runValidators: true})
-   .then(person => {
-        response.json(person)
-    }).catch(error => next(error))
-  }
-  )
-
-  app.post('/api/persons', (request, response, next) => {
-
-  const body = request.body
-  
-    const person = new Person({
-      name:body.name,
-      number:body.number
-    })
-
   person.save()
-  .then(result => {
+    .then(result => {
       response.status(201).json(result)
-  }) 
-  .catch(error => next(error))
-  })
+    })
+    .catch(error => next(error))
+})
 
-  const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
+// eslint-disable-next-line no-unused-vars
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'the id does not exit' })
   }
-
-  const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
-  
-    if (error.name === 'CastError') {
-      return response.status(400).send({ error: 'the id does not exit' })
-    } 
-    else if (error.name === 'ValidationError') {
-      return response.status(400).json({ error: error.message }).end()
-    }
-    next(error)
+  else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message }).end()
   }
-  
-  app.use(errorHandler)
+  next(error)
+}
 
-  const PORT = process.env.PORT
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-  })
+app.use(errorHandler)
+
+const PORT = process.env.PORT
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
