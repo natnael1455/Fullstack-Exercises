@@ -14,7 +14,6 @@ import personService from '../services/person'
         console.log(returnedPerosn)
         })
       }
-     
     }
 
     return(

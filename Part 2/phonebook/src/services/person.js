@@ -10,18 +10,14 @@ const getAll = () => {
   const request = axios.post(baseUrl, newObject)
  return request
  .then(response => response.data)
- .catch(error => {
-  alert("not created");
-})
+ 
 }
 
 const update = (id, newPerson) => {
     const request = axios.put(`${baseUrl}/${id}`, newPerson)
     return request
     .then(response => response.data)
-    .catch(error => {
-      alert("not updated");
-    })
+    
   }
 const delet = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`)

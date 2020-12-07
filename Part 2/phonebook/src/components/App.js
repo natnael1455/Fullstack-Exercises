@@ -3,16 +3,28 @@ import Form from './Form'
 import Persons from './Persons'
 import Filter from './Filter'
 import personService from '../services/person'
-import '../index.css'
 
-const Notification = ({ message }) => {
-  if (message === null) {
+
+const Notification = ({ message}) => {
+
+  const notifactionStyle = {
+    color: message.color,
+    background:'lightgrey',
+    fontSize: '20px',
+    borderStyle: 'solid',
+    borderRadius: '5px',
+    padding: '10px',
+    marginBottom: '10px'
+  }
+  
+  if (message.msg === null) {
     return null
   }
 
+
   return (
-    <div className="error">
-      {message}
+    <div className="error" style={notifactionStyle}>
+      {message.msg}
     </div>
   )
 }
@@ -25,7 +37,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('enter the name')
   const [newNumber,setNewNumber] = useState('000')
   const [showAll, setShowAll] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState({msg:null,color:'green'})
   
   useEffect(() => {
     personService
@@ -38,10 +50,39 @@ const App = () => {
   
   const addName = (event) => {
     event.preventDefault()
-    const same = (element) => element  === newName;
+    const per = persons.find(person => person.name === newName)
+    if(per){
+      const result = window.confirm(`the name ${newName} exists do you want change`)
+      if(result){
+        per.number = newNumber
+        personService
+        .update(per.id, per)
+        .then(returnedPerosn => {
+          
+          const newMessage ={msg:` the number for ${newName} is changed to ${newNumber} in the phone book`,
+          color: 'green'
+          }
+        setErrorMessage( newMessage)
+        setTimeout(() => {
+          setErrorMessage({msg:null,color:'green'})
+        }, 5000)
+          setPersons(persons.map(person => person.id !== returnedPerosn.id? person: returnedPerosn))
+        })
+        .catch(error => {
+          // this is the way to access the error message
+          const err=error.response.data.error
+          const newMessage ={msg:err,
+        color: 'red'
+      }
+        setErrorMessage( newMessage)
+          setTimeout(() => {
+            setErrorMessage({msg:null,color:'green'})
+          }, 5000)
 
-    
-
+        }) 
+      }
+    }
+    else{
       const personObject = {
         name: newName,
         number:newNumber
@@ -49,17 +90,29 @@ const App = () => {
 
       personService
       .create(personObject)
-      .then(returnedNote => {
-        setPersons(persons.concat(personObject))
-        setErrorMessage(
-          `${newName} is added to the phone book`
-        )
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        const newMessage ={msg:`${newName} is added to the phone book`,
+        color: 'green'
+      }
+        setErrorMessage( newMessage)
         setTimeout(() => {
-          setErrorMessage(null)
+          setErrorMessage({msg:null,color:'green'})
         }, 5000)
         })
-      
-    
+        .catch(error => {
+          // this is the way to access the error message
+          const err=error.response.data.error
+          const newMessage ={msg:err,
+        color: 'red'
+      }
+        setErrorMessage( newMessage)
+          setTimeout(() => {
+            setErrorMessage({msg:null,color:'green'})
+          }, 5000)
+
+        }) 
+    }
   }
 
   const handleNameChange = (event) => {
@@ -93,7 +146,7 @@ const App = () => {
         newNumber={newNumber}
         handleNumberChange={handleNumberChange} />
 
-      <Persons personToShow={personToShow}/>
+      <Persons personToShow={personToShow} />
     </div>
 
     
